@@ -1,0 +1,25 @@
+{
+  "include": [
+    "./src/",
+  ],
+
+  "compilerOptions": {
+    "baseUrl": "./",
+
+    "paths": {
+      "~/*": ["*"],
+      "@/*": ["src/*"],
+    },
+
+    "outDir": "./lib",
+    "module": "commonjs",
+    "target": "es5",
+
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "strict": true,
+  }
+}
