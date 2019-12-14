@@ -39,3 +39,14 @@ export const edgesOf = (node: Node, direction?: Direction): Edge[] => {
 
   return graph.edges.filter(edge => edge[direction] === node)
 }
+
+
+
+export const edgeFor = (from: Node, to: Node): Edge => {
+  const edge = edgesOf(from).find(edge => edge[TO] === to)
+
+  if (!edge)
+    throw new Error(`No Such Route – (${from} -> ${to})`)
+
+  return edge
+}
