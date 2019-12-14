@@ -1,5 +1,5 @@
-describe('EDS', () => {
-  test('foo', () => {
-    expect(true).not.toBe(false)
-  })
+import utilities from './utilities'
+
+describe('Eko Delivery Service', () => {
+  utilities()
 })

@@ -1,4 +1,3 @@
-
 export type Node = string
 
 export type Edge = {
@@ -12,4 +11,14 @@ export type Route = Edge[]
 export type Graph = {
   nodes: Node[]
   edges: Edge[]
+}
+
+
+
+let graph: Graph
+
+
+
+export const use = (context: Graph): void => {
+  graph = context
 }
