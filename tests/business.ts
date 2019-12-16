@@ -31,4 +31,30 @@ export default () => describe('Business rules', () => {
     const routes = routesFor('E', 'D', route => route.length <= 4)
     expect(routes.length).toBe(4)
   })
+
+  test('number of routes #2', () => {
+    const routes = routesFor('E', 'E')
+    expect(routes.length).toBe(5)
+  })
+
+  test('number of routes #3 (bonus)', () => {
+    const routes = routesFor('E', 'E', route => costOf(route) < 20, true)
+    expect(routes.length).toBe(29)
+  })
+
+  test('cheapest cost #1', () => {
+    const cheapest = routesFor('E', 'D')
+      .sort((a, b) => costOf(b) - costOf(a))
+      .pop()!
+
+      expect(costOf(cheapest)).toBe(9)
+  })
+
+  test('cheapest cost #2', () => {
+    const cheapest = routesFor('E', 'E')
+      .sort((a, b) => costOf(b) - costOf(a))
+      .pop()!
+
+    expect(costOf(cheapest)).toBe(6)
+  })
 })
