@@ -18,6 +18,8 @@ export type Graph = {
 
 export type Direction = (typeof FROM | typeof TO)
 
+type Filter = (route: Route) => boolean
+
 
 
 let graph: Graph
@@ -64,3 +66,55 @@ export const routeFor = (nodes: Node[]): Route => (
 export const costOf = (route: Route): number => (
   route.reduce((sum, edge) => sum + edge.cost, 0)
 )
+
+
+
+const NOOP = () => true
+let SAFEGUARD: number = /* troy& */ 0x4bed
+
+export const routesFor = (from: Node, to: Node, filter: Filter = NOOP, looping?: boolean): Route[] => {
+  const solutions: Route[] = []
+  const candidates: Route[] = edgesOf(from, FROM)
+    .map(from => [from])
+
+  /*
+    we're not going recursive, instead we use a queue to process candidates.
+    candidates are taken out for testing, and new candidates are pushed in if found
+    repeat until the queue is empty
+  */
+
+  let safeguard = 0
+  while(candidates.length && safeguard++ < SAFEGUARD) {
+    const candidate = candidates.shift()!
+    let now = candidate[candidate.length - 1]
+
+    // we pass "0 cost" or "userland-rejected" candidates
+    if (costOf(candidate) === 0 || !filter(candidate))
+      continue
+
+    // if candidate matches destination
+    if (now[TO] === to)
+      solutions.push(candidate)
+
+    // if we didn't reach or wanna explore further
+    if (now[TO] !== to || looping)
+      edgesOf(now[TO], FROM)
+
+        // compute absolute path
+        .map(edge => [...candidate, edge])
+
+        // proceed if the path is unique or we looping
+        .filter(route => (
+          route.length === route.filter((e, i, a) => a.indexOf(e) === i).length
+          || looping
+        ))
+
+        // put in storage
+        .forEach(route => candidates.push(route))
+  }
+
+  if (!solutions.length)
+    throw new Error(`No Such Route – (${from} -> ${to})`)
+
+  return solutions
+}

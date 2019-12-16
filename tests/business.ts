@@ -1,5 +1,5 @@
 import { load } from '~/mocks/load'
-import { use, routeFor, costOf } from '@/index'
+import { use, routeFor, costOf, routesFor } from '@/index'
 
 export default () => describe('Business rules', () => {
   beforeAll(async () => {
@@ -25,5 +25,10 @@ export default () => describe('Business rules', () => {
   test('delivery cost #4', () => {
     expect(() => routeFor(['A', 'F']))
       .toThrowError(/No Such Route/)
+  })
+
+  test('number of routes #1', () => {
+    const routes = routesFor('E', 'D', route => route.length <= 4)
+    expect(routes.length).toBe(4)
   })
 })
