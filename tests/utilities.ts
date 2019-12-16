@@ -1,5 +1,5 @@
 import { load } from '~/mocks/load'
-import { use, edgesOf, edgeFor } from '@/index'
+import { use, edgesOf, edgeFor, routeFor } from '@/index'
 
 export default () => describe('utilities', () => {
   test('load data', async () => {
@@ -30,6 +30,18 @@ export default () => describe('utilities', () => {
 
   test('find direct edge between 2 nodes (invalid)', () => {
     expect(() => edgeFor('A', 'F'))
+      .toThrowError(/No Such Route/)
+  })
+
+  test('convert node[] to edge[] (valid)', () => {
+    expect(routeFor(['A', 'B', 'E'])).toEqual([
+      expect.objectContaining({ from: 'A', to: 'B' }),
+      expect.objectContaining({ from: 'B', to: 'E' }),
+    ])
+  })
+
+  test('convert node[] to edge[] (invalid)', () => {
+    expect(() => routeFor(['A', 'F']))
       .toThrowError(/No Such Route/)
   })
 })

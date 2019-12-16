@@ -50,3 +50,11 @@ export const edgeFor = (from: Node, to: Node): Edge => {
 
   return edge
 }
+
+
+
+export const routeFor = (nodes: Node[]): Route => (
+  nodes.slice(0, -1).reduce<Route>((route, node, index) => (
+    [...route, edgeFor(node, nodes[index + 1])]
+  ), [])
+)
