@@ -1,18 +1,22 @@
 export const FROM = 'from'
 export const TO = 'to'
 
-export type Node = string
+export type NodeId = string
+
+export type Node = {
+  id: NodeId
+}
 
 export type Edge = {
-  [FROM]: Node,
-  [TO]: Node,
+  [FROM]: NodeId,
+  [TO]: NodeId,
   cost: number,
 }
 
 export type Route = Edge[]
 
 export type Graph = {
-  nodes: Node[]
+  nodes: Record<NodeId, Node>
   edges: Edge[]
 }
 
@@ -32,8 +36,8 @@ export const use = (context: Graph): void => {
 
 
 
-export const edgesOf = (node: Node, direction?: Direction): Edge[] => {
-  if (!graph.nodes.includes(node))
+export const edgesOf = (node: NodeId, direction?: Direction): Edge[] => {
+  if (!(node in graph.nodes))
     throw new Error(`No Such Node - (${node})`)
 
   if (!direction)
@@ -44,7 +48,7 @@ export const edgesOf = (node: Node, direction?: Direction): Edge[] => {
 
 
 
-export const edgeFor = (from: Node, to: Node): Edge => {
+export const edgeFor = (from: NodeId, to: NodeId): Edge => {
   const edge = edgesOf(from).find(edge => edge[TO] === to)
 
   if (!edge)
@@ -55,7 +59,7 @@ export const edgeFor = (from: Node, to: Node): Edge => {
 
 
 
-export const routeFor = (nodes: Node[]): Route => (
+export const routeFor = (nodes: NodeId[]): Route => (
   nodes.slice(0, -1).reduce<Route>((route, node, index) => (
     [...route, edgeFor(node, nodes[index + 1])]
   ), [])
@@ -72,7 +76,7 @@ export const costOf = (route: Route): number => (
 const NOOP = () => true
 let SAFEGUARD: number = /* troy& */ 0x4bed
 
-export const routesFor = (from: Node, to: Node, filter: Filter = NOOP, looping?: boolean): Route[] => {
+export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, looping?: boolean): Route[] => {
   const solutions: Route[] = []
   const candidates: Route[] = edgesOf(from, FROM)
     .map(from => [from])
