@@ -58,3 +58,9 @@ export const routeFor = (nodes: Node[]): Route => (
     [...route, edgeFor(node, nodes[index + 1])]
   ), [])
 )
+
+
+
+export const costOf = (route: Route): number => (
+  route.reduce((sum, edge) => sum + edge.cost, 0)
+)
