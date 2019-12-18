@@ -38,7 +38,7 @@ export default () => describe('Business rules', () => {
   })
 
   test('number of routes #3 (bonus)', () => {
-    const routes = routesFor('E', 'E', route => costOf(route) < 20, true)
+    const routes = routesFor('E', 'E', route => costOf(route) < 20, 2)
     expect(routes.length).toBe(29)
   })
 

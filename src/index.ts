@@ -76,7 +76,7 @@ export const costOf = (route: Route): number => (
 const NOOP = () => true
 let SAFEGUARD: number = /* troy& */ 0x4bed
 
-export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, looping?: boolean): Route[] => {
+export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, occurences: number = 1): Route[] => {
   const solutions: Route[] = []
   const candidates: Route[] = edgesOf(from, FROM)
     .map(from => [from])
@@ -101,7 +101,7 @@ export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, loopi
       solutions.push(candidate)
 
     // if we didn't reach or wanna explore further
-    if (now[TO] !== to || looping)
+    if (now[TO] !== to || occurences > 1)
       edgesOf(now[TO], FROM)
 
         // compute absolute path
@@ -109,8 +109,9 @@ export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, loopi
 
         // proceed if the path is unique or we looping
         .filter(route => (
-          route.length === route.filter((e, i, a) => a.indexOf(e) === i).length
-          || looping
+          route
+            .filter((e, i, a) => a.indexOf(e) === i)
+            .every(uniq => route.filter(edge => edge === uniq).length <= occurences + 1)
         ))
 
         // put in storage
