@@ -7,6 +7,7 @@
     "start": "jest --watch --verbose",
     "test": "jest --verbose",
     "build": "tsc --project . && ef-tspm",
+    "local": "npm run test && npm run build && cp package.json lib/ && cd lib/ && npm link",
     "deploy": "npm run test && npm run build && cp package.json lib/ && npm publish lib/ --dry-run && rm -rf lib/"
   },
   "keywords": [],
