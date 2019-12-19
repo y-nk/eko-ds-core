@@ -26,6 +26,53 @@ type Filter = (route: Route) => boolean
 
 
 
+export const add = (context: Graph, node: NodeId, data: object = {}): Node => {
+  if (!(node in context.nodes))
+    context.nodes[node] = { ...data, id: node }
+
+  return context.nodes[node]
+}
+
+
+
+export const del = (context: Graph, node: NodeId): void => {
+  if (!(node in context.nodes))
+    throw new Error(`No Such Node - (${node})`)
+
+  edgesOf(context, node)
+    .forEach(edge => unlink(context, edge[FROM], edge[TO]))
+
+  const { [node]: dead, ...others } = context.nodes
+  context.nodes = others
+}
+
+
+
+export const link = (context: Graph, from: NodeId, to: NodeId, cost: number, data: object = {}): Edge => {
+  const notfound = [from, to].filter(node => !(node in context.nodes))
+
+  if (notfound.length)
+    throw new Error(`No Such Node - (${notfound.join(', ')})`)
+
+  try {
+    return edgeFor(context, from, to)
+  }
+  catch (error) {
+    const edge: Edge = { ...data, from, to, cost }
+    context.edges.push(edge)
+    return edge
+  }
+}
+
+
+
+export const unlink = (context: Graph, from: NodeId, to: NodeId): void => {
+  const edge: Edge = edgeFor(context, from, to)
+  context.edges.splice(context.edges.indexOf(edge), 1)
+}
+
+
+
 export const edgesOf = (context: Graph, node: NodeId, direction?: Direction): Edge[] => {
   if (!(node in context.nodes))
     throw new Error(`No Such Node - (${node})`)

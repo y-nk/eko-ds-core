@@ -54,6 +54,11 @@ type Route = Edge[]
 
 ## API
 
+- `add = (context: Graph, node: NodeId, data?: object)`: adds a node from the graph
+- `del = (context: Graph, node: NodeId, data?: object)`: removes a node from the graph
+- `link = (context: Graph, from: NodeId, to: NodeId, cost: number, data?: object)`: adds an edge between `from/to` tuple
+- `unlink = (context: Graph, from: NodeId, to: NodeId)`: removes an edge between `from/to` tuple
+
 - `edgesOf = (context: Graph, node: NodeId): Edge[]`: find all the edges which starts with node
 - `edgeFor = (context: Graph, from: NodeId, to: NodeId): Edge`: returns the exact edge for a `from/to` tuple
 - `routeFor = (context: Graph, nodes: NodeId[]): Route`: convert an array of node ids to its corresponding route

@@ -1,7 +1,7 @@
 import { createReadStream } from 'fs'
 import csv from 'csv-parser'
 
-import { Graph, NodeId, Node, Edge } from '@/.'
+import { Graph, NodeId, Node, Edge, add, link } from '@/.'
 
 export const load = async (file: string): Promise<Graph> => {
   const graph: Graph = {
@@ -18,13 +18,9 @@ export const load = async (file: string): Promise<Graph> => {
         )
       }))
       .on('data', (edge: Edge) => {
-        if (!(edge.from in graph.nodes))
-          graph.nodes[edge.from] = { id: edge.from }
-
-        if (!(edge.to in graph.nodes))
-          graph.nodes[edge.to] = { id: edge.to }
-
-        graph.edges.push(edge)
+        add(graph, edge.from)
+        add(graph, edge.to)
+        link(graph, edge.from, edge.to, edge.cost)
       })
       .on('end', () => resolve(graph))
   })
