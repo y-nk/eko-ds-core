@@ -54,11 +54,11 @@ type Route = Edge[]
 
 ## API
 
-- `edgesOf = (node: NodeId): Edge[]`: find all the edges which starts with node
-- `edgeFor = (from: NodeId, to: NodeId): Edge`: returns the exact edge for a `from/to` tuple
-- `routeFor = (nodes: NodeId[]): Route`: convert an array of node ids to its corresponding route
+- `edgesOf = (context: Graph, node: NodeId): Edge[]`: find all the edges which starts with node
+- `edgeFor = (context: Graph, from: NodeId, to: NodeId): Edge`: returns the exact edge for a `from/to` tuple
+- `routeFor = (context: Graph, nodes: NodeId[]): Route`: convert an array of node ids to its corresponding route
 - `costOf = (route: Route): number`: calculates the cost for the provided route
-- `routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, occurences: number = 1): Route[]`: computes all possible routes for a given `from/to` tuple
+- `routesFor = (context: Graph, from: NodeId, to: NodeId, filter: Filter = NOOP, occurences: number = 1): Route[]`: computes all possible routes for a given `from/to` tuple
 
 ---
 

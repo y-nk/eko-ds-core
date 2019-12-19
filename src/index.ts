@@ -26,30 +26,20 @@ type Filter = (route: Route) => boolean
 
 
 
-let graph: Graph
-
-
-
-export const use = (context: Graph): void => {
-  graph = context
-}
-
-
-
-export const edgesOf = (node: NodeId, direction?: Direction): Edge[] => {
-  if (!(node in graph.nodes))
+export const edgesOf = (context: Graph, node: NodeId, direction?: Direction): Edge[] => {
+  if (!(node in context.nodes))
     throw new Error(`No Such Node - (${node})`)
 
   if (!direction)
-    return graph.edges.filter(edge => edge[FROM] === node || edge[TO] === node)
+    return context.edges.filter(edge => edge[FROM] === node || edge[TO] === node)
 
-  return graph.edges.filter(edge => edge[direction] === node)
+  return context.edges.filter(edge => edge[direction] === node)
 }
 
 
 
-export const edgeFor = (from: NodeId, to: NodeId): Edge => {
-  const edge = edgesOf(from).find(edge => edge[TO] === to)
+export const edgeFor = (context: Graph, from: NodeId, to: NodeId): Edge => {
+  const edge = edgesOf(context, from).find(edge => edge[TO] === to)
 
   if (!edge)
     throw new Error(`No Such Route – (${from} -> ${to})`)
@@ -59,9 +49,9 @@ export const edgeFor = (from: NodeId, to: NodeId): Edge => {
 
 
 
-export const routeFor = (nodes: NodeId[]): Route => (
+export const routeFor = (context: Graph, nodes: NodeId[]): Route => (
   nodes.slice(0, -1).reduce<Route>((route, node, index) => (
-    [...route, edgeFor(node, nodes[index + 1])]
+    [...route, edgeFor(context, node, nodes[index + 1])]
   ), [])
 )
 
@@ -76,9 +66,9 @@ export const costOf = (route: Route): number => (
 const NOOP = () => true
 let SAFEGUARD: number = /* troy& */ 0x4bed
 
-export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, occurences: number = 1): Route[] => {
+export const routesFor = (context: Graph, from: NodeId, to: NodeId, filter: Filter = NOOP, occurences: number = 1): Route[] => {
   const solutions: Route[] = []
-  const candidates: Route[] = edgesOf(from, FROM)
+  const candidates: Route[] = edgesOf(context, from, FROM)
     .map(from => [from])
 
   /*
@@ -101,8 +91,8 @@ export const routesFor = (from: NodeId, to: NodeId, filter: Filter = NOOP, occur
       solutions.push(candidate)
 
     // if we didn't reach or wanna explore further
-    if (now[TO] !== to || occurences > 1)
-      edgesOf(now[TO], FROM)
+    if (now.to !== to || occurences > 1)
+      edgesOf(context, now[TO], FROM)
 
         // compute absolute path
         .map(edge => [...candidate, edge])
