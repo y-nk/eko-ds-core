@@ -1,0 +1,27 @@
+{
+  "name": "eko-ds-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "jest --watch --verbose",
+    "test": "jest --verbose",
+    "build": "tsc --project . && ef-tspm",
+    "local": "npm run test && npm run build && cp package.json lib/ && cd lib/ && npm link",
+    "predeploy": "npm run test && npm run build && cp package.json lib/",
+    "deploy": "gh-pages -d lib -b build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ef-carbon/tspm": "^2.2.5",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.17",
+    "csv-parser": "^2.3.2",
+    "gh-pages": "^2.1.1",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.3"
+  }
+}

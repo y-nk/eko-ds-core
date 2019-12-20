@@ -1,0 +1,1 @@
+{"version":3,"file":"libarray.d.ts","sourceRoot":"","sources":["../src/libarray.ts"],"names":[],"mappings":"AACA,eAAO,MAAM,KAAK,gCAIjB,CAAA;AAGD,eAAO,MAAM,SAAS,6CAUrB,CAAA;AAGD,eAAO,MAAM,SAAS,gDAQrB,CAAA;AAED,aAAK,MAAM,CAAC,CAAC,IAAI;IACf,OAAO,EAAE,CAAC,EAAE,CAAC;IACb,KAAK,EAAE,MAAM,CAAC;CACf,CAAA;AAGD,eAAO,MAAM,UAAU,6DAoBtB,CAAA"}
