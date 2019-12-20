@@ -4,14 +4,14 @@ SDK-ish package with business logic regarding eko delivery service.
 
 ## How to use
 
-- "Because it's a test" requirements:
+- checkout and test:
   ```
   git clone https://github.com/y-nk/eko-ds-core
   cd eko-ds-core
-  npm run local
+  yarn && yarn test
   ```
 
-- installation: `npm install eko-ds-core` // `npm link eko-ds-core`
+- installation: `yarn add https://github.com/y-nk/eko-ds-core\#build`
 
 - import : `import * as ekods from 'eko-ds-core'`
 

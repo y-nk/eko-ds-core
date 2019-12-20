@@ -8,7 +8,8 @@
     "test": "jest --verbose",
     "build": "tsc --project . && ef-tspm",
     "local": "npm run test && npm run build && cp package.json lib/ && cd lib/ && npm link",
-    "deploy": "npm run test && npm run build && cp package.json lib/ && npm publish lib/ --dry-run && rm -rf lib/"
+    "predeploy": "npm run test && npm run build && cp package.json lib/",
+    "deploy": "gh-pages -d lib -b build"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +18,10 @@
     "@ef-carbon/tspm": "^2.2.5",
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.17",
+    "csv-parser": "^2.3.2",
+    "gh-pages": "^2.1.1",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
-    "typescript": "^3.7.3",
-    "csv-parser": "^2.3.2"
+    "typescript": "^3.7.3"
   }
 }
